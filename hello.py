@@ -67,14 +67,14 @@ def home():
 
         # Iterate over query2
         for each2 in query2.result:
-            print("Inside query2")
+            sleep('0.1')
             if (each2['DISTRITO'] == result['name']):
                 result['habs'] = each2['POBLACION']
                 break
 
         # Iterate over query3
         for each3 in query3.result:
-            print("Inside query3")
+            sleep('0.1')
             if (each3['DISTRITO'] == result['name']):
                 result['parks'] = each3['SUPERFICIE/m2']
                 break
