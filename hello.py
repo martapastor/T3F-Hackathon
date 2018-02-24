@@ -89,17 +89,16 @@ def home():
     # Credits to https://stackoverflow.com/a/3422287 and https://mmxgroup.net/2012/04/12/merging-python-list-of-dictionaries-based-on-specific-key/
     results = []
 
-    def merge_lists(l1, l2, key):
+    def merge_lists(l1, l2, l3, key):
       merged = {}
-      for item in l1+l2:
+      for item in l1+l2+l3:
         if item[key] in merged:
           merged[item[key]].update(item)
         else:
           merged[item[key]] = item
       return [val for (_, val) in merged.items()]
 
-    results = merge_lists(results1, results2, 'name')
-    results = merge_lists(results, results3, 'name')
+    results = merge_lists(results1, results2, results3, 'name')
 
     # Compute eco_score
     for each in results:
