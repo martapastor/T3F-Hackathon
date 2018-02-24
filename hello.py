@@ -67,17 +67,17 @@ def home():
     for each in query1.result:
         result = {}
         result['name'] = each['DISTRITO']
-        result['clean_dogs'] = each['Ud Reposicin Bolsas Caninas']
         result['basura_muebles'] = each['Kg Recogida de muebles']
         result['basura_varios'] = each['Kg Recogida Residuos Viarios']
+        result['clean_dogs'] = each['Ud Reposicin Bolsas Caninas']
         results1.append(result)
 
     # Iterate over query2
     time.sleep(5)
     for each in query2.result:
         result = {}
-        result['name'] = each['DISTRITO']
         result['habs'] = each['POBLACION']
+        result['name'] = each['DISTRITO']
         results2.append(result)
 
     # Iterate over query3
@@ -105,7 +105,7 @@ def home():
 
     # Compute eco_score
     for each in results:
-        each['eco_score'] = 0.5
+        each['eco_score'] = (int(each['basura_muebles']) + int(each['basura_varios']))/int(each['habs'])
 
 
     # # Compute eco_score

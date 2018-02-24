@@ -12,7 +12,7 @@ if __name__ == "__main__":
     client = Cloudant("cf5f9c78-492f-427c-bf8c-b267e321ce1d-bluemix", "2ff4ef832b70e14f6bee3f527aa758a3826441adce95394f95389425592ee2c8", url="https://cf5f9c78-492f-427c-bf8c-b267e321ce1d-bluemix:2ff4ef832b70e14f6bee3f527aa758a3826441adce95394f95389425592ee2c8@cf5f9c78-492f-427c-bf8c-b267e321ce1d-bluemix.cloudant.com")
     client.connect()
 
-    databaseName = "mydatabase-db"
+    databaseName = "zonas-verdes-db"
     client.delete_database(databaseName)
     myDatabase = client.create_database(databaseName)
     if myDatabase.exists():
@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     #try:
         # Create documents using the sample data.
-        doc = open('datasets/file.json', encoding='utf8')
+        doc = open('datasets/ZonasVerdes.json', encoding='utf8')
         json_doc = json.loads(doc.read())
 
         for each in json_doc:
