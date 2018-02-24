@@ -58,36 +58,56 @@ def home():
     query2 = Query(myDatabase2, selector={'_id': {'$gt': 0}}, fields=['DISTRITO','POBLACION'])
     query3 = Query(myDatabase3, selector={'_id': {'$gt': 0}}, fields=['DISTRITO','SUPERFICIE/m2'])
 
-    query1_result = query1.result
-    query2_result = query2.result
-    query3_result = query3.result
+    results1 = []
+    results2 = []
+    results3 = []
 
-    results = []
     # Iterate over query1
-    for each in query1_result:
+    for each in query1.result:
         result = {}
         result['name'] = each['DISTRITO']
         result['clean_dogs'] = each['Ud Reposicin Bolsas Caninas']
+        result['basura_muebles'] = each['Kg Recogida de muebles']
+        result['basura_varios'] = each['Kg Recogida Residuos Viarios']
+        results1.append(result)
 
-        # Iterate over query2
-        for each2 in query2_result:
-            #sleep('0.1')
-            if (each2['DISTRITO'] == result['name']):
-                result['habs'] = each2['POBLACION']
-                break
+    # Iterate over query2
+    for each in query2.result:
+        result = {}
+        result['name'] = each['DISTRITO']
+        result['habs'] = each['POBLACION']
+        results2.append(result)
 
-        # Iterate over query3
-        for each3 in query3_result:
-            #sleep('0.1')
-            if (each3['DISTRITO'] == result['name']):
-                result['parks'] = each3['SUPERFICIE/m2']
-                break
+    # Iterate over query3
+    for each in query3.result:
+        result = {}
+        result['name'] = each['DISTRITO']
+        result['parks'] = each['SUPERFICIE/m2']
+        results3.append(result)
 
-        # Compute eco_score
-        result['eco_score'] = 0.5 #(each['Kg Recogida de muebles'] + each['Kg Recogida Residuos Viarios'])/result['habs']
+    # Merge lists of dicts which share a common key
+    # Credits to https://stackoverflow.com/a/3422287 and https://mmxgroup.net/2012/04/12/merging-python-list-of-dictionaries-based-on-specific-key/
+    results = []
 
-        # Append to list
-        results.append(result)
+    def merge_lists(l1, l2, key):
+      merged = {}
+      for item in l1+l2:
+        if item[key] in merged:
+          merged[item[key]].update(item)
+        else:
+          merged[item[key]] = item
+      return [val for (_, val) in merged.items()]
+
+    results = merge_lists(results1, results2, 'name')
+    results = merge_lists(results, results3, 'name')
+
+    # Compute eco_score
+    for each in results:
+        each['eco_score'] = 0.5
+
+
+    # # Compute eco_score
+    # result['eco_score'] = 0.5 #(each['Kg Recogida de muebles'] + each['Kg Recogida Residuos Viarios'])/result['habs']
 
     return template ('templates/index.html', districts=results)
 
