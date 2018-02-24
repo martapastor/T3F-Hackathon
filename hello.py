@@ -78,7 +78,7 @@ def home():
                 break
 
         # Compute eco_score
-        result['eco_score'] = (each['Kg Recogida de muebles'] + each['Kg Recogida Residuos Viarios'])/result['habs']
+        result['eco_score'] = 0.5 #(each['Kg Recogida de muebles'] + each['Kg Recogida Residuos Viarios'])/result['habs']
 
         # Append to list
         results.append(result)
