@@ -58,23 +58,27 @@ def home():
     query2 = Query(myDatabase2, selector={'_id': {'$gt': 0}}, fields=['DISTRITO','POBLACION'])
     query3 = Query(myDatabase3, selector={'_id': {'$gt': 0}}, fields=['DISTRITO','SUPERFICIE/m2'])
 
+    query1_result = query1.result
+    query2_result = query2.result
+    query3_result = query3.result
+
     results = []
     # Iterate over query1
-    for each in query1.result:
+    for each in query1_result:
         result = {}
         result['name'] = each['DISTRITO']
         result['clean_dogs'] = each['Ud Reposicin Bolsas Caninas']
 
         # Iterate over query2
-        for each2 in query2.result:
-            sleep('0.1')
+        for each2 in query2_result:
+            #sleep('0.1')
             if (each2['DISTRITO'] == result['name']):
                 result['habs'] = each2['POBLACION']
                 break
 
         # Iterate over query3
-        for each3 in query3.result:
-            sleep('0.1')
+        for each3 in query3_result:
+            #sleep('0.1')
             if (each3['DISTRITO'] == result['name']):
                 result['parks'] = each3['SUPERFICIE/m2']
                 break
