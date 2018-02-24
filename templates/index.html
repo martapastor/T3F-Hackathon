@@ -59,9 +59,7 @@
     <h1>Ranking de distritos</h1>
     %for district in districts:
     <div class="container">
-      <h2>{{district['DISTRITO']}}</h2>
-      <h3>{{district['Kg Recogida de muebles']}}</h3>
-      <!--
+      <h2>{{district['name']}}</h2>
       <table>
         <tr>
           <td>Eco-friendly</td>
@@ -80,7 +78,6 @@
           <td>{{district.parks}}</td>
         </tr>
       </table>
-    -->
     </div>
     %end
   </div>

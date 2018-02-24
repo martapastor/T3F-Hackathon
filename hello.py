@@ -1,9 +1,16 @@
-from cloudant import Cloudant
 from flask import Flask, render_template, request, jsonify
 import atexit
 import cf_deployment_tracker
 import os
 import json
+
+from cloudant.client import Cloudant
+from cloudant.error import CloudantException
+from cloudant.result import Result, ResultByKey
+from cloudant.query import Query
+
+
+from bottle import get, run, request, template
 
 # Emit Bluemix deployment event
 cf_deployment_tracker.track()
@@ -41,43 +48,42 @@ port = int(os.getenv('PORT', 8000))
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    # Top 3 distritos
+    myDatabase1 = client.get("act-limp-urb-db", remote=True)
+    myDatabase2 = client.get("padron-db", remote=True)
+    myDatabase3 = client.get("zonas-verdes-db", remote=True)
 
-# /* Endpoint to greet and add a new visitor to database.
-# * Send a POST request to localhost:8000/api/visitors with body
-# * {
-# *     "name": "Bob"
-# * }
-# */
-@app.route('/api/visitors', methods=['GET'])
-def get_visitor():
-    if client:
-        return jsonify(list(map(lambda doc: doc['name'], db)))
-    else:
-        print('No database')
-        return jsonify([])
+    # Tengo que ordenar descendentemente la lista
+    query1 = Query(myDatabase1, selector={'_id': {'$gt': 0}}, fields=['DISTRITO','Kg Recogida de muebles','Kg Recogida Residuos Viarios','Ud Reposicin Bolsas Caninas'])
+    query2 = Query(myDatabase2, selector={'_id': {'$gt': 0}}, fields=['DISTRITO','POBLACION'])
+    query3 = Query(myDatabase3, selector={'_id': {'$gt': 0}}, fields=['DISTRITO','SUPERFICIE/m2'])
 
-# /**
-#  * Endpoint to get a JSON array of all the visitors in the database
-#  * REST API example:
-#  * <code>
-#  * GET http://localhost:8000/api/visitors
-#  * </code>
-#  *
-#  * Response:
-#  * [ "Bob", "Jane" ]
-#  * @return An array of all the visitor names
-#  */
-@app.route('/api/visitors', methods=['POST'])
-def put_visitor():
-    user = request.json['name']
-    if client:
-        data = {'name':user}
-        db.create_document(data)
-        return 'Hello %s! I added you to the database.' % user
-    else:
-        print('No database')
-        return 'Hello %s!' % user
+    results = []
+    # Iterate over query1
+    for each in query1.results:
+        result = {}
+        result['name'] = each['DISTRITO']
+        result['clean_dogs'] = each['Ud Reposicin Bolsas Caninas']
+
+        # Iterate over query2
+        for each2 in query2.results:
+            if (each2['DISTRITO'] == result['name']):
+                result['habs'] = each2['POBLACION']
+                break
+
+        # Iterate over query3
+        for each3 in query3.results:
+            if (each3['DISTRITO'] == result['name']):
+                result['parks'] = each3['SUPERFICIE/m2']
+                break
+
+        # Compute eco_score
+        result['eco_score'] = (each['Kg Recogida de muebles'] + each['Kg Recogida Residuos Viarios'])/result['habs']
+
+        # Append to list
+        results.append(result)
+
+    return template ('templates/index.html', districts=results)
 
 @atexit.register
 def shutdown():
