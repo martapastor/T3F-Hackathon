@@ -68,8 +68,8 @@
       % for district in districts
       <tr>
         <td>{{district.name}}</td>
-        <td>{{district.acoustic_score}}</td>
-        <td>{{district.atmospheric_score}}</td>
+        <td class="{{danger if district.acoustic_score > 0.5}}">{{district.acoustic_score}}</td>
+        <td class="{{danger if district.atmospheric_score > 0.5}}">{{district.atmospheric_score}}</td>
       </tr>
       % end
     </table>
