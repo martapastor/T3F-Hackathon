@@ -60,19 +60,19 @@ def home():
 
     results = []
     # Iterate over query1
-    for each in query1.results:
+    for each in query1.result:
         result = {}
         result['name'] = each['DISTRITO']
         result['clean_dogs'] = each['Ud Reposicin Bolsas Caninas']
 
         # Iterate over query2
-        for each2 in query2.results:
+        for each2 in query2.result:
             if (each2['DISTRITO'] == result['name']):
                 result['habs'] = each2['POBLACION']
                 break
 
         # Iterate over query3
-        for each3 in query3.results:
+        for each3 in query3.result:
             if (each3['DISTRITO'] == result['name']):
                 result['parks'] = each3['SUPERFICIE/m2']
                 break
