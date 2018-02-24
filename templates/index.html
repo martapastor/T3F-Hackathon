@@ -60,24 +60,7 @@
     %for district in districts:
     <div class="container">
       <h2>{{district['name']}}</h2>
-      <table>
-        <tr>
-          <td>Eco-friendly</td>
-          <td>{{district['eco_score']}}</td>
-        </tr>
-        <tr>
-          <td># habitantes</td>
-          <td>{{district['habs']}}</td>
-        </tr>
-        <tr>
-          <td><i>Clean dogs</i></td>
-          <td>{{district['clean_dogs']}}</td>
-        </tr>
-        <tr>
-          <td>Porcentaje parques</td>
-          <td>{{district['parks']}}</td>
-        </tr>
-      </table>
+      <h4>Eco-friendly: {{district['eco_score']}} </h4>
     </div>
     %end
   </div>
