@@ -58,19 +58,30 @@ def home():
     query2 = Query(myDatabase2, selector={'_id': {'$gt': 0}}, fields=['DISTRITO','POBLACION'])
     query3 = Query(myDatabase3, selector={'_id': {'$gt': 0}}, fields=['DISTRITO','SUPERFICIE/m2'])
 
-    results = {}
-    for each in query1.result:
-        results['name'] = each['DISTRITO']
-        results['clean_dogs'] = each['Ud Reposicin Bolsas Caninas']
+    results = []
+    # Iterate over query1
+    for each in query1.results:
+        result = {}
+        result['name'] = each['DISTRITO']
+        result['clean_dogs'] = each['Ud Reposicin Bolsas Caninas']
 
-    for each in query2.result:
-        if (results['name'] == each['DISTRITO']):
-            # results['eco_score'] =
-            results['habs'] = each['POBLACION']
+        # Iterate over query2
+        for each2 in query2.results:
+            if (each2['DISTRITO'] == result['name']):
+                result['habs'] = each2['POBLACION']
+                break
 
-    # for each in query3.result:
-    #     if (results['name'] == each['DISTRITO']):
-    #         results['parks'] = None
+        # Iterate over query3
+        for each3 in query3.results:
+            if (each3['DISTRITO'] == result['name']):
+                result['parks'] = each3['SUPERFICIE/m2']
+                break
+
+        # Compute eco_score
+        result['eco_score'] = (each['Kg Recogida de muebles'] + each['Kg Recogida Residuos Viarios'])/result['habs']
+
+        # Append to list
+        results.append(result)
 
     return template ('templates/index.html', districts=results)
 
