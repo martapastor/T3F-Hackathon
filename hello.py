@@ -3,6 +3,7 @@ import atexit
 import cf_deployment_tracker
 import os
 import json
+import time
 
 from cloudant.client import Cloudant
 from cloudant.error import CloudantException
@@ -72,6 +73,7 @@ def home():
         results1.append(result)
 
     # Iterate over query2
+    time.sleep(5)
     for each in query2.result:
         result = {}
         result['name'] = each['DISTRITO']
@@ -79,6 +81,7 @@ def home():
         results2.append(result)
 
     # Iterate over query3
+    time.sleep(5)
     for each in query3.result:
         result = {}
         result['name'] = each['DISTRITO']
