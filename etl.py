@@ -22,15 +22,35 @@ if __name__ == "__main__":
         # Create documents using the sample data.
         #csvfile = open('datasets/Actuaciones_limpieza_urbana.csv', 'r')
         #jsonfile = open('datasets/Actuaciones_limpieza_urbana.json', 'w')
-        dictionary = json.loads('datasets/puntos_limpios_fijos.json')
-        print(dictionary)
+        #dictionary = json.loads('datasets/convertcsv.json')
+        #print(dictionary)
 
         # Create a document using the Database API.
-        newDocument = myDatabase.create_document(dictionary)
+        #for each in dictionary:
+        #        newDocument = myDatabase.create_document(dictionary.keys()[each])
+
+        jsonDocument =  {
+            "MES": "DICIEMBRE 2017",
+            "LOTE": 6,
+            "DISTRITO": "VILLAVERDE",
+            "Kg Recogida de muebles": "3427",
+            "Kg Recogida Residuos Viarios": "421434",
+            "N Servicios Barrido Manual": 946,
+            "N Servicios Barrido Mecnico": 5,
+            "N Servicios Barrido Mixto": 80,
+            "N Servicios Baldeo Mixto": 26,
+            "N Servicios Baldeo Mecnico": 45,
+            "N Servicios Eliminacin Grafitis": 50,
+            "M2 Eliminacin Grafitis": 908,
+            "Ud Reposicin Bolsas Caninas": 277589
+        }
+
+        # Create a document using the Database API.
+        newDocument = myDatabase.create_document(jsonDocument)
 
         # Check that the document exists in the database.
         if newDocument.exists():
-            print ("Document '{0}' successfully created.".format(number))
+            print ("Document '{0}' successfully created.")
 
     except IOError:
         print("The file does not exist.")
