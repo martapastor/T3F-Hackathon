@@ -51,38 +51,28 @@
 
           //Call getNames on page load.
           getNames();
+
+
     </script>
 </head>
 
 <body>
   <div class="container">
-    <h1>Ranking de distritos</h1>
-    %for district in districts:
-    <div class="container">
-      <h2>{{district['DISTRITO']}}</h2>
-      <h3>{{district['Kg Recogida de muebles']}}</h3>
-      <!--
-      <table>
-        <tr>
-          <td>Eco-friendly</td>
-          <td>{{district.eco_score}}</td>
-        </tr>
-        <tr>
-          <td># habitantes</td>
-          <td>{{district.habs}}</td>
-        </tr>
-        <tr>
-          <td><i>Clean dogs</i></td>
-          <td>{{district.clean_dogs}}</td>
-        </tr>
-        <tr>
-          <td>Porcentaje parques</td>
-          <td>{{district.parks}}</td>
-        </tr>
-      </table>
-    -->
-    </div>
-    %end
+    <h1>Estado</h1>
+    <table class="table">
+      <thead>
+        <th>Distrito</th>
+        <th>Acústica</th>
+        <th>Atmosférica</th>
+      </thead>
+      % for district in districts
+      <tr>
+        <td>{{district.name}}</td>
+        <td>{{district.acoustic_score}}</td>
+        <td>{{district.atmospheric_score}}</td>
+      </tr>
+      % end
+    </table>
   </div>
 </body>
 
